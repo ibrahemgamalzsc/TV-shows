@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="pageNumber"
+            type="String" />
+
+        <variable
+            name="searchPageNumber"
+            type="String" />
+
+        <variable
+            name="mainViewModel"
+            type="com.example.tvshows.ui.viewmodle.MainViewModel" />
+
+        <variable
+            name="isLoading"
+            type="Boolean" />
+
+        <variable
+            name="nextEnable"
+            type="Boolean" />
+
+        <variable
+            name="previousEnable"
+            type="Boolean" />
+
+        <variable
+            name="nextSearchEnable"
+            type="Boolean" />
+
+        <variable
+            name="previousSearchEnable"
+            type="Boolean" />
+
+        <variable
+            name="searchEnabled"
+            type="Boolean" />
+
+        <import type="android.view.View"></import>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray"
+        android:fitsSystemWindows="true"
+        tools:context=".ui.view.MainActivity">
+
+
+        <ProgressBar
+            android:id="@+id/isLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{isLoading ? View.VISIBLE : View.GONE , default=visible}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></ProgressBar>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/most_popular_rv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="@{isLoading ? View.GONE : View.VISIBLE , default=gone}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/controllers"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/tv_show_holder"></androidx.recyclerview.widget.RecyclerView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/controllers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="@{isLoading ? View.GONE : View.VISIBLE , default=gone}">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:orientation="horizontal"
+                android:visibility="@{searchEnabled ? View.GONE : View.VISIBLE , default=gone}"
+                android:weightSum="5"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:visibility="@{previousEnable ? View.GONE : View.VISIBLE , default=gone}"></View>
+
+                <Button
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:onClick="@{()->mainViewModel.onPreviousClick()}"
+                    android:text="Previous"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorAccent"
+                    android:visibility="@{previousEnable ? View.VISIBLE : View.GONE , default=gone}"></Button>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@{pageNumber}"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp"></TextView>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:visibility="@{nextEnable ? View.GONE : View.VISIBLE , default=gone}"></View>
+
+                <Button
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:onClick="@{()->mainViewModel.onNextClick()}"
+                    android:text="Next"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorAccent"
+                    android:visibility="@{nextEnable ? View.VISIBLE : View.GONE , default=gone}"></Button>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:orientation="horizontal"
+                android:visibility="@{searchEnabled ? View.VISIBLE : View.GONE, default=gone}"
+                android:weightSum="5"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:visibility="@{previousSearchEnable ? View.GONE : View.VISIBLE , default=gone}"></View>
+
+                <Button
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:onClick="@{()->mainViewModel.onSearchPreviousClick()}"
+                    android:text="Previous"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorAccent"
+                    android:visibility="@{previousSearchEnable ? View.VISIBLE : View.GONE , default=gone}"></Button>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@{searchPageNumber}"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp"></TextView>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:visibility="@{nextSearchEnable ? View.GONE : View.VISIBLE , default=gone}"></View>
+
+                <Button
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:onClick="@{()->mainViewModel.onSearchNextClick()}"
+                    android:text="Next"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorAccent"
+                    android:visibility="@{nextSearchEnable ? View.VISIBLE : View.GONE , default=gone}"></Button>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
